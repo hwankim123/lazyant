@@ -6,6 +6,6 @@ import com.hwan.lazyant.model.account.Account;
 public class AccountMapper {
 
     public static Account mapToAccount(AccountInsertRequest request) {
-        return new Account(request.getName(), request.getName(), request.getBank());
+        return new Account(request.getName(), request.getNickname(), request.getBank());
     }
 }
