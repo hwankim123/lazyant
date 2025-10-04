@@ -4,5 +4,5 @@ CREATE TABLE la_stocks (
 	market varchar(16) NULL,
 	symbol varchar(16) NULL,
 	etf_type varchar(64) NULL,
-	type varchar(16) NULL,
+	type varchar(16) NULL
 );
