@@ -59,6 +59,6 @@ public class Trading {
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
     public void calculateVolume(Double tradePrice) {
-        this.volume = Math.round(tradePrice / this.marketCurrentPrice) / 1000000.0;
+        this.volume = Math.round(tradePrice / this.marketCurrentPrice * 1000000) / 1000000.0;
     }
 }
