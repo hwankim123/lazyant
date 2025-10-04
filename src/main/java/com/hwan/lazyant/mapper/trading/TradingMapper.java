@@ -1,7 +1,7 @@
-package com.hwan.lazyant.mapper;
+package com.hwan.lazyant.mapper.trading;
 
 import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
-import com.hwan.lazyant.model.Trading;
+import com.hwan.lazyant.model.trading.Trading;
 
 public class TradingMapper {
 

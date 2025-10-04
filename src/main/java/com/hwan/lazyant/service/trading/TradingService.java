@@ -1,8 +1,8 @@
 package com.hwan.lazyant.service.trading;
 
 import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
-import com.hwan.lazyant.mapper.TradingMapper;
-import com.hwan.lazyant.model.Trading;
+import com.hwan.lazyant.mapper.trading.TradingMapper;
+import com.hwan.lazyant.model.trading.Trading;
 import com.hwan.lazyant.repository.trading.TradingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.hwan.lazyant.model;
+package com.hwan.lazyant.model.trading;
 
 import com.hwan.lazyant.model.trading.TradingType;
 import jakarta.annotation.Nonnull;
