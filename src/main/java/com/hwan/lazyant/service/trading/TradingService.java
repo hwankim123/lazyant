@@ -17,9 +17,15 @@ public class TradingService {
     @Transactional
     public void insert(TradingInsertRequest request) {
         Trading newTrading = TradingMapper.mapToTrading(request);
-        if(!newTrading.hasVolume()) {
-            newTrading.calculateVolume(request.getTradePrice());
+
+        if(!newTrading.hasVolume() && newTrading.hasPrice()) {
+            newTrading.calculateVolume(request.getAmount());
+        } else if(newTrading.hasVolume() && !newTrading.hasPrice()) {
+            newTrading.calculatePrice(request.getAmount());
+        } else if(!newTrading.hasVolume() && !newTrading.hasPrice()) {
+            throw new IllegalArgumentException("Cannot insert trading. Both volume and marketCurrentPrice is null");
         }
+
         tradingRepository.save(newTrading);
     }
 }

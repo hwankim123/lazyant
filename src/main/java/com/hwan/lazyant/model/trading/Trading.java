@@ -1,6 +1,5 @@
 package com.hwan.lazyant.model.trading;
 
-import com.hwan.lazyant.model.trading.TradingType;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -27,9 +26,8 @@ public class Trading {
     @Column
     private TradingType tradingType;
 
-    @Nonnull
     @Column
-    private Double marketCurrentPrice;
+    private Double price;
 
     @Column
     private Double volume;
@@ -42,12 +40,13 @@ public class Trading {
     private String memo;
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, 수량, 메모
-    public Trading(@Nonnull Long stockId, @Nonnull Long accountId, @Nonnull TradingType tradingType, @Nonnull Double marketCurrentPrice,
-                   @Nullable LocalDateTime tradeTime, @Nullable Double volume, @Nullable String memo) {
+    public Trading(@Nonnull Long stockId, @Nonnull Long accountId, @Nonnull TradingType tradingType,
+                   @Nullable Double price, @Nullable LocalDateTime tradeTime, @Nullable Double volume,
+                   @Nullable String memo) {
         this.stockId = stockId;
         this.accountId = accountId;
         this.tradingType = tradingType;
-        this.marketCurrentPrice = marketCurrentPrice;
+        this.price = price;
         this.tradeTime = tradeTime == null ? LocalDateTime.now() : tradeTime;
         this.volume = volume;
         this.memo = memo;
@@ -59,6 +58,15 @@ public class Trading {
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
     public void calculateVolume(Double tradePrice) {
-        this.volume = Math.round(tradePrice / this.marketCurrentPrice * 1000000) / 1000000.0;
+        this.volume = Math.round(tradePrice / this.price * 1000000) / 1000000.0;
+    }
+
+    public boolean hasPrice() {
+        return this.price != null;
+    }
+
+    //TODO: 현재가 없으면 매매금액/수량 으로 현재가 계산하는 로직 추가
+    public void calculatePrice(Double tradePrice) {
+        this.price = Math.round(tradePrice / this.volume * 100) / 100.0;
     }
 }
