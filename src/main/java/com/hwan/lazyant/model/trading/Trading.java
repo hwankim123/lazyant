@@ -3,9 +3,12 @@ package com.hwan.lazyant.model.trading;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "la_tradings")
 public class Trading {
@@ -65,8 +68,19 @@ public class Trading {
         return this.price != null;
     }
 
-    //TODO: 현재가 없으면 매매금액/수량 으로 현재가 계산하는 로직 추가
     public void calculatePrice(Double tradePrice) {
         this.price = Math.round(tradePrice / this.volume * 100) / 100.0;
+    }
+
+    public Long getStockId() {
+        return this.stockId;
+    }
+
+    public Double provideSignedVolume() {
+        return this.tradingType.applySign(this.volume);
+    }
+
+    public double calculateAmount() {
+        return Math.round(this.provideSignedVolume() * this.price * 100) / 100.0;
     }
 }

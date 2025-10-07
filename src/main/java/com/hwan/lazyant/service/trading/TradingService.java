@@ -4,6 +4,7 @@ import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
 import com.hwan.lazyant.mapper.trading.TradingMapper;
 import com.hwan.lazyant.model.trading.Trading;
 import com.hwan.lazyant.repository.trading.TradingRepository;
+import com.hwan.lazyant.service.asset.StockAssetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TradingService {
 
     private final TradingRepository tradingRepository;
+    private final StockAssetService stockAssetService;
 
     @Transactional
     public void insert(TradingInsertRequest request) {
@@ -27,5 +29,6 @@ public class TradingService {
         }
 
         tradingRepository.save(newTrading);
+        stockAssetService.accumulate(newTrading);
     }
 }
