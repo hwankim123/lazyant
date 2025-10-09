@@ -18,16 +18,24 @@ public class StockAsset {
     @Nonnull
     private Long stockId;
 
+    private Long portfolioItemId;
+
     private double volume;
 
     private double investmentPrincipal;
 
-    public StockAsset(@Nonnull Long stockId) {
-        this.stockId = stockId;
+    public StockAsset(@Nonnull Trading trading) {
+        this.stockId = trading.getStockId();
+        this.volume = trading.provideSignedVolume();
+        this.investmentPrincipal = trading.calculateAmount();
     }
 
     public void accumulate(Trading trading) {
         this.volume += trading.provideSignedVolume();
         this.investmentPrincipal += trading.calculateAmount();
+    }
+
+    public void mapPortfolioItem(Long portfolioItemId) {
+        this.portfolioItemId = portfolioItemId;
     }
 }
