@@ -60,6 +60,10 @@ public class Trading {
         return this.volume != null;
     }
 
+    public Double getVolume() {
+        return this.volume;
+    }
+
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
     public void calculateVolume(Double amount) {
         this.volume = Math.round(amount / this.price * 1000000) / 1000000.0;
@@ -69,8 +73,12 @@ public class Trading {
         return this.price != null;
     }
 
-    public void calculatePrice(Double tradePrice) {
-        this.price = Math.round(tradePrice / this.volume * 100) / 100.0;
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void calculatePrice(Double amount) {
+        this.price = Math.round(amount / this.volume * 100) / 100.0;
     }
 
     public Long getStockId() {
