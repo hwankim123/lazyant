@@ -38,4 +38,12 @@ public class StockAsset {
     public void mapPortfolioItem(Long portfolioItemId) {
         this.portfolioItemId = portfolioItemId;
     }
+
+    public double getVolume() {
+        return this.volume;
+    }
+
+    public double getInvestmentPrincipal() {
+        return investmentPrincipal;
+    }
 }

@@ -45,7 +45,7 @@ public class Trading {
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, 수량, 메모
     public Trading(@Nonnull Long stockId, @Nonnull Long accountId, @Nonnull TradingType tradingType,
-                   @Nullable Double price, @Nullable LocalDateTime tradeTime, @Nullable Double volume,
+                   @Nullable Double price, @Nullable Double volume, @Nullable LocalDateTime tradeTime,
                    @Nullable String memo) {
         this.stockId = stockId;
         this.accountId = accountId;
