@@ -27,22 +27,16 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioItem> items = new ArrayList<>();
 
-    public Portfolio(String name, List<PortfolioItem> items) {
-        this.name = name;
-        items.forEach(item -> item.mapWithPortfolio(this));
+    public static Portfolio withUnknownFactor(String name, List<PortfolioItem> items) {
+        Portfolio portfolio = new Portfolio();
+        portfolio.name = name;
+        items.add(new PortfolioItem(Factor.UNKNOWN, 0));
+        items.forEach(item -> item.mapWithPortfolio(portfolio));
+        return portfolio;
     }
 
-    public void setPortfolioItem(PortfolioItem portfolioItem) {
-        this.items.add(portfolioItem);
-    }
-
-    public void createUnknownFactorItemIfNotPresent() {
-        this.getUnknownFactorItem()
-                .ifPresentOrElse(
-                        item -> log.debug("PortfolioItem with Factor:%s is present.".formatted(Factor.UNKNOWN)),
-                        () -> new PortfolioItem(Factor.UNKNOWN, 0)
-                                .mapWithPortfolio(this)
-                );
+    public List<PortfolioItem> getItems() {
+        return items;
     }
 
     public void addToUnknownItemFactor(StockAsset newStockAsset) {

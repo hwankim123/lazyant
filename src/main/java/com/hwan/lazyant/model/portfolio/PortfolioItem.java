@@ -32,10 +32,9 @@ public class PortfolioItem {
         return this.id;
     }
 
-
     public void mapWithPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
-        portfolio.setPortfolioItem(this);
+        portfolio.getItems().add(this);
     }
 
     public boolean isFactorUnknown() {

@@ -10,7 +10,7 @@ import java.util.List;
 public class PortfolioMapper {
 
     public static Portfolio mapToPortfolio(PortfolioInsertRequest request) {
-        return new Portfolio(request.getName(), mapToPortfolioItems(request.getItems()));
+        return Portfolio.withUnknownFactor(request.getName(), mapToPortfolioItems(request.getItems()));
     }
 
     private static List<PortfolioItem> mapToPortfolioItems(List<PortfolioItemInsertRequest> itemRequests) {

@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,10 +43,10 @@ class StockAssetServiceTest {
         StockAsset expected = StockAsset.from(trading);
         when(stockAssetRepository.findByStockId(anyLong())).thenReturn(Optional.empty());
         when(stockAssetRepository.save(any(StockAsset.class))).thenReturn(expected);
-        when(portfolioRepository.findByUserId(anyLong())).thenReturn(Optional.of(new Portfolio(
-                        "name",
-                        List.of(new PortfolioItem(Factor.INDEX, 100), new PortfolioItem(Factor.UNKNOWN, 0))
-        )));
+        ArrayList<PortfolioItem> items = new ArrayList<>();
+        items.add(new PortfolioItem(Factor.INDEX, 100));
+        Portfolio portfolio = Portfolio.withUnknownFactor("name", items);
+        when(portfolioRepository.findByUserId(anyLong())).thenReturn(Optional.of(portfolio));
         StockAssetService sut = new StockAssetService(stockAssetRepository, portfolioService);
 
         StockAsset stockAsset = sut.accumulate(trading);

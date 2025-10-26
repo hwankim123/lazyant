@@ -18,7 +18,6 @@ public class PortfolioService {
     public void insert(PortfolioInsertRequest request) {
         Portfolio portfolio = PortfolioMapper.mapToPortfolio(request);
         portfolio.setUserId(1L);//TODO: 개인화
-        portfolio.createUnknownFactorItemIfNotPresent();
         portfolioRepository.save(portfolio);
     }
 
