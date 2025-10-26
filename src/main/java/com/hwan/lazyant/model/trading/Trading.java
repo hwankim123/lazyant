@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -60,8 +61,8 @@ public class Trading {
     }
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
-    public void calculateVolume(Double tradePrice) {
-        this.volume = Math.round(tradePrice / this.price * 1000000) / 1000000.0;
+    public void calculateVolume(Double amount) {
+        this.volume = Math.round(amount / this.price * 1000000) / 1000000.0;
     }
 
     public boolean hasPrice() {
@@ -82,5 +83,18 @@ public class Trading {
 
     public double calculateAmount() {
         return Math.round(this.provideSignedVolume() * this.price * 100) / 100.0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trading trading = (Trading) o;
+        return Objects.equals(stockId, trading.stockId) && Objects.equals(accountId, trading.accountId) && tradingType == trading.tradingType && Objects.equals(price, trading.price) && Objects.equals(volume, trading.volume) && Objects.equals(tradeTime, trading.tradeTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stockId, accountId, tradingType, price, volume, tradeTime);
     }
 }

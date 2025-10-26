@@ -17,7 +17,7 @@ public class TradingService {
     private final StockAssetService stockAssetService;
 
     @Transactional
-    public void insert(TradingInsertRequest request) {
+    public Trading write(TradingInsertRequest request) {
         Trading newTrading = TradingMapper.mapToTrading(request);
 
         if(!newTrading.hasVolume() && newTrading.hasPrice()) {
@@ -25,10 +25,12 @@ public class TradingService {
         } else if(newTrading.hasVolume() && !newTrading.hasPrice()) {
             newTrading.calculatePrice(request.getAmount());
         } else if(!newTrading.hasVolume() && !newTrading.hasPrice()) {
-            throw new IllegalArgumentException("Cannot insert trading. Both volume and marketCurrentPrice is null");
+            throw new IllegalArgumentException("Cannot write tradingHistory. Both volume and marketCurrentPrice is null");
         }
 
         tradingRepository.save(newTrading);
         stockAssetService.accumulate(newTrading);
+
+        return newTrading;
     }
 }
