@@ -85,12 +85,12 @@ public class Trading {
         return this.stockId;
     }
 
-    public Double provideSignedVolume() {
+    public Double getSignedVolume() {
         return this.tradingType.applySign(this.volume);
     }
 
-    public double calculateAmount() {
-        return Math.round(this.provideSignedVolume() * this.price * 100) / 100.0;
+    public double evaluateAmount() {
+        return this.tradingType.applySign(Math.round(this.getVolume() * this.price * 100) / 100.0);
     }
 
     @Override

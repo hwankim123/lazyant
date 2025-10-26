@@ -35,7 +35,7 @@ class TradingServiceTest {
     public void calculate_volume_if_request_dont_have_volume() {
         LocalDateTime tradeAt = LocalDateTime.now();
         Trading expected = TradingMapper.mapToTrading(new TradingInsertRequest(1L, 1L, TradingType.BUY, 100d, 0.5d, 50d, "memo", tradeAt));
-        when(stockAssetRepository.findByStockId(1L)).thenReturn(Optional.of(new StockAsset(expected)));
+        when(stockAssetRepository.findByStockId(1L)).thenReturn(Optional.of(StockAsset.from(expected)));
         TradingInsertRequest tradingInsertRequest = new TradingInsertRequest(1L, 1L, TradingType.BUY, 100d, null, 50d, "memo", tradeAt);
         TradingService sut = new TradingService(tradingRepository, stockAssetService);
 
@@ -48,7 +48,7 @@ class TradingServiceTest {
     public void calculate_price_if_request_dont_have_price() {
         LocalDateTime tradeAt = LocalDateTime.now();
         Trading expected = TradingMapper.mapToTrading(new TradingInsertRequest(1L, 1L, TradingType.BUY, 100d, 0.5d, 50d, "memo", tradeAt));
-        when(stockAssetRepository.findByStockId(1L)).thenReturn(Optional.of(new StockAsset(expected)));
+        when(stockAssetRepository.findByStockId(1L)).thenReturn(Optional.of(StockAsset.from(expected)));
         TradingInsertRequest tradingInsertRequest = new TradingInsertRequest(1L, 1L, TradingType.BUY, 100d, 0.5d, null, "memo", tradeAt);
         TradingService sut = new TradingService(tradingRepository, stockAssetService);
 

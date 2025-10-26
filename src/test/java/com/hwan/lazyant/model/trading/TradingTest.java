@@ -35,12 +35,12 @@ class TradingTest {
             "BUY,  50.0",
             "SELL, -50.0"
     })
-    void calculate_amount_of_trading(TradingType type, double expectedAmount) {
+    void evaluate_amount_of_trading(TradingType type, double expectedAmount) {
         // given
         Trading sut = new Trading(1L, 1L, type, 100d, 0.5d, LocalDateTime.now(), "memo");
 
         // when
-        double amount = sut.calculateAmount();
+        double amount = sut.evaluateAmount();
 
         // then
         assertThat(amount).isEqualTo(expectedAmount);
