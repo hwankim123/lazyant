@@ -27,7 +27,7 @@ public class StockAssetService {
     }
 
     private StockAsset init(Trading trading) {
-        StockAsset newStockAsset = new StockAsset(trading);
+        StockAsset newStockAsset = StockAsset.from(trading);
         Portfolio portfolio = portfolioService.findByUserId(1L);// TODO: 개인화
         portfolio.addToUnknownItemFactor(newStockAsset);
         return stockAssetRepository.save(newStockAsset);

@@ -40,7 +40,7 @@ class StockAssetServiceTest {
     @Test
     public void init_if_stockAsset_not_present() {
         Trading trading = new Trading(1L, 1L, TradingType.BUY, 100d, 0.5d, LocalDateTime.now(), "memo");
-        StockAsset expected = new StockAsset(trading);
+        StockAsset expected = StockAsset.from(trading);
         when(stockAssetRepository.findByStockId(anyLong())).thenReturn(Optional.empty());
         when(stockAssetRepository.save(any(StockAsset.class))).thenReturn(expected);
         when(portfolioRepository.findByUserId(anyLong())).thenReturn(Optional.of(new Portfolio(

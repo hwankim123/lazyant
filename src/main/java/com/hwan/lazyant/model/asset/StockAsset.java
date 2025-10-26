@@ -24,15 +24,21 @@ public class StockAsset {
 
     private double investmentPrincipal;
 
-    public StockAsset(@Nonnull Trading trading) {
-        this.stockId = trading.getStockId();
-        this.volume = trading.provideSignedVolume();
-        this.investmentPrincipal = trading.calculateAmount();
+    public StockAsset(Long stockId) {
+        this.stockId = stockId;
+    }
+
+    public static StockAsset from(@Nonnull Trading trading) {
+        StockAsset stockAsset = new StockAsset();
+        stockAsset.stockId = trading.getStockId();
+        stockAsset.volume = trading.getSignedVolume();
+        stockAsset.investmentPrincipal = trading.evaluateAmount();
+        return stockAsset;
     }
 
     public void accumulate(Trading trading) {
-        this.volume += trading.provideSignedVolume();
-        this.investmentPrincipal += trading.calculateAmount();
+        this.volume += trading.getSignedVolume();
+        this.investmentPrincipal += trading.evaluateAmount();
     }
 
     public void mapPortfolioItem(Long portfolioItemId) {
