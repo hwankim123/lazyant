@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TradingTest {
+public class TradingTest {
 
     @Test
     public void calculate_volume() {
-        Trading sut = new Trading(1L, 1L, TradingType.BUY, 100d, null, LocalDateTime.now(), "memo");
+        Trading sut = createInstanceOf(100d, null);
 
         sut.calculateVolume(50d);
 
@@ -22,7 +22,7 @@ class TradingTest {
 
     @Test
     public void calculate_price() {
-        Trading sut = new Trading(1L, 1L, TradingType.BUY, null, 0.5d, LocalDateTime.now(), "memo");
+        Trading sut = createInstanceOf(null, 0.5d);
 
         sut.calculatePrice(50d);
 
@@ -36,13 +36,18 @@ class TradingTest {
             "SELL, -50.0"
     })
     void evaluate_amount_of_trading(TradingType type, double expectedAmount) {
-        // given
-        Trading sut = new Trading(1L, 1L, type, 100d, 0.5d, LocalDateTime.now(), "memo");
+        Trading sut = createInstanceOf(type, 100d, 0.5d);
 
-        // when
         double amount = sut.evaluateAmount();
 
-        // then
         assertThat(amount).isEqualTo(expectedAmount);
+    }
+
+    public static Trading createInstanceOf(Double price, Double volume) {
+        return createInstanceOf(TradingType.BUY, price, volume);
+    }
+
+    public static Trading createInstanceOf(TradingType type, Double price, Double volume) {
+        return new Trading(1L, 1L, type, price, volume, LocalDateTime.now(), "memo");
     }
 }

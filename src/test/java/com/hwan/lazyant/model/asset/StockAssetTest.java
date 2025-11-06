@@ -1,11 +1,10 @@
 package com.hwan.lazyant.model.asset;
 
 import com.hwan.lazyant.model.trading.Trading;
+import com.hwan.lazyant.model.trading.TradingTest;
 import com.hwan.lazyant.model.trading.TradingType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,18 +12,18 @@ class StockAssetTest {
 
     @ParameterizedTest
     @CsvSource({
-            "1, 1, BUY, 100d, 0.5d, 2025-10-23T22:00:00, null",
-            "1, 1, SELL, 100d, 0.5d, 2025-10-23T22:00:00, null"
+            "BUY, 100d, 0.5d",
+            "SELL, 100d, 0.5d"
     })
-    public void accumulate(Long stockId, Long accountId, TradingType tradingType, Double price, Double volume, LocalDateTime tradeAt, String memo) {
-        Trading trading = new Trading(stockId, accountId, tradingType, price, volume, tradeAt, memo);
+    public void accumulate(TradingType type, Double price, Double volume) {
+        Trading trading = TradingTest.createInstanceOf(type, price, volume);
         StockAsset sut = new StockAsset(1L);
-        double beforeAccumulatedVolume = sut.getVolume();
-        double beforeAccumulatedInvestmentPrincipal = sut.getInvestmentPrincipal();
+        double volumeBeforeAccumulated = sut.getVolume();
+        double investmentPrincipalBeforeAccumulated = sut.getInvestmentPrincipal();
 
         sut.accumulate(trading);
 
-        assertThat(sut.getVolume()).isEqualTo(beforeAccumulatedVolume + trading.getSignedVolume());
-        assertThat(sut.getInvestmentPrincipal()).isEqualTo(beforeAccumulatedInvestmentPrincipal + trading.evaluateAmount());
+        assertThat(sut.getVolume()).isEqualTo(volumeBeforeAccumulated + trading.getSignedVolume());
+        assertThat(sut.getInvestmentPrincipal()).isEqualTo(investmentPrincipalBeforeAccumulated + trading.evaluateAmount());
     }
 }
