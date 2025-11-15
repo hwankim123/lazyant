@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class StockAssetTest {
+public class StockAssetTest {
 
     @ParameterizedTest
     @CsvSource({
@@ -25,5 +25,9 @@ class StockAssetTest {
 
         assertThat(sut.getVolume()).isEqualTo(volumeBeforeAccumulated + trading.getSignedVolume());
         assertThat(sut.getInvestmentPrincipal()).isEqualTo(investmentPrincipalBeforeAccumulated + trading.evaluateAmount());
+    }
+
+    public static StockAsset createInstanceOf(double volume, double investmentPrincipal) {
+        return new StockAsset(1L, 1L, volume, investmentPrincipal);
     }
 }

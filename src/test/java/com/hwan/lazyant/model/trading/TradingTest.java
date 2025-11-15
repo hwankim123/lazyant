@@ -44,10 +44,18 @@ public class TradingTest {
     }
 
     public static Trading createInstanceOf(Double price, Double volume) {
-        return createInstanceOf(TradingType.BUY, price, volume);
+        return createInstanceOf(1L, TradingType.BUY, price, volume);
     }
 
     public static Trading createInstanceOf(TradingType type, Double price, Double volume) {
-        return new Trading(1L, 1L, type, price, volume, LocalDateTime.now(), "memo");
+        return createInstanceOf(1L, type, price, volume);
+    }
+
+    public static Trading createInstanceOf(Long stockId, Double price, Double volume) {
+        return createInstanceOf(stockId, TradingType.BUY, price, volume);
+    }
+
+    public static Trading createInstanceOf(Long stockId, TradingType type, Double price, Double volume) {
+        return new Trading(stockId, 1L, type, price, volume, LocalDateTime.now(), "memo");
     }
 }

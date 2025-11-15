@@ -2,6 +2,7 @@ package com.hwan.lazyant.model.asset;
 
 import com.hwan.lazyant.model.trading.Trading;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,14 @@ public class StockAsset {
     private double investmentPrincipal;
 
     public StockAsset(Long stockId) {
+        this(stockId, null, 0d, 0d);
+    }
+
+    public StockAsset(@Nonnull Long stockId, @Nullable Long portfolioItemId, @Nullable double volume, @Nullable double investmentPrincipal) {
         this.stockId = stockId;
+        this.portfolioItemId = portfolioItemId;
+        this.volume = volume;
+        this.investmentPrincipal = investmentPrincipal;
     }
 
     public static StockAsset from(@Nonnull Trading trading) {

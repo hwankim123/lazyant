@@ -18,18 +18,18 @@ public class StockAssetService {
 
     @Transactional
     public StockAsset accumulate(Trading trading) {
-        return this.stockAssetRepository.findByStockId(trading.getStockId())
-                .map(stockAsset -> {
-                    stockAsset.accumulate(trading);
-                    return stockAsset;
-                })
-                .orElseGet(() -> this.init(trading));
+        StockAsset stockAsset = stockAssetRepository.findByStockId(trading.getStockId())
+                .orElseGet(() -> this.create(trading.getStockId()));
+        stockAsset.accumulate(trading);
+        return stockAsset;
     }
 
-    private StockAsset init(Trading trading) {
-        StockAsset newStockAsset = StockAsset.from(trading);
+    @Transactional
+    public StockAsset create(Long stockId) {
+        StockAsset stockAsset = new StockAsset(stockId);
         Portfolio portfolio = portfolioService.findByUserId(1L);// TODO: 개인화
-        portfolio.addToUnknownItemFactor(newStockAsset);
-        return stockAssetRepository.save(newStockAsset);
+        portfolio.addToUnknownItemFactor(stockAsset);
+        stockAssetRepository.save(stockAsset);
+        return stockAsset;
     }
 }

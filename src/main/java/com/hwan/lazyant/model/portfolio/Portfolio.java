@@ -27,6 +27,7 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioItem> items = new ArrayList<>();
 
+    //TODO: 네이밍
     public static Portfolio withUnknownFactor(String name, List<PortfolioItem> items) {
         Portfolio portfolio = new Portfolio();
         portfolio.name = name;
@@ -39,13 +40,14 @@ public class Portfolio {
         return items;
     }
 
+    //TODO: 네이밍
     public void addToUnknownItemFactor(StockAsset newStockAsset) {
-        PortfolioItem portfolioItem = this.getUnknownFactorItem()
+        PortfolioItem portfolioItem = this.findUnknownFactorItem()
                 .orElseThrow(() -> new IllegalStateException("Cannot get PortfolioItem with Factor=%s".formatted(Factor.UNKNOWN)));
         newStockAsset.mapPortfolioItem(portfolioItem.getId());
     }
 
-    private Optional<PortfolioItem> getUnknownFactorItem() {
+    private Optional<PortfolioItem> findUnknownFactorItem() {
         return this.items.stream()
                 .filter(PortfolioItem::isFactorUnknown)
                 .findFirst();
@@ -53,5 +55,12 @@ public class Portfolio {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public PortfolioItem getUnknownFactor() {
+        return this.items.stream()
+                .filter(PortfolioItem::isFactorUnknown)
+                .findAny()
+                .orElseThrow(() -> new IllegalStateException("Cannot get PortfolioItem with Factor=%s".formatted(Factor.UNKNOWN)));
     }
 }
