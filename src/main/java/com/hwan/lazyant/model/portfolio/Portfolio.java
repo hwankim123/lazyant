@@ -1,6 +1,5 @@
 package com.hwan.lazyant.model.portfolio;
 
-import com.hwan.lazyant.model.asset.StockAsset;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
@@ -40,24 +38,11 @@ public class Portfolio {
         return items;
     }
 
-    //TODO: 네이밍
-    public void addToUnknownItemFactor(StockAsset newStockAsset) {
-        PortfolioItem portfolioItem = this.findUnknownFactorItem()
-                .orElseThrow(() -> new IllegalStateException("Cannot get PortfolioItem with Factor=%s".formatted(Factor.UNKNOWN)));
-        newStockAsset.mapPortfolioItem(portfolioItem.getId());
-    }
-
-    private Optional<PortfolioItem> findUnknownFactorItem() {
-        return this.items.stream()
-                .filter(PortfolioItem::isFactorUnknown)
-                .findFirst();
-    }
-
     public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public PortfolioItem getUnknownFactor() {
+    public PortfolioItem getUnknownFactorItem() {
         return this.items.stream()
                 .filter(PortfolioItem::isFactorUnknown)
                 .findAny()

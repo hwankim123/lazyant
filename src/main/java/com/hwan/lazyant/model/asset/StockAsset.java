@@ -1,5 +1,7 @@
 package com.hwan.lazyant.model.asset;
 
+import com.hwan.lazyant.model.portfolio.Portfolio;
+import com.hwan.lazyant.model.portfolio.PortfolioItem;
 import com.hwan.lazyant.model.trading.Trading;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -49,8 +51,9 @@ public class StockAsset {
         this.investmentPrincipal += trading.evaluateAmount();
     }
 
-    public void mapPortfolioItem(Long portfolioItemId) {
-        this.portfolioItemId = portfolioItemId;
+    public void mapPortfolioItem(Portfolio portfolio) {
+        PortfolioItem unknownFactor = portfolio.getUnknownFactorItem();
+        this.portfolioItemId = unknownFactor.getId();
     }
 
     public double getVolume() {

@@ -28,7 +28,7 @@ public class StockAssetService {
     public StockAsset create(Long stockId) {
         StockAsset stockAsset = new StockAsset(stockId);
         Portfolio portfolio = portfolioService.findByUserId(1L);// TODO: 개인화
-        portfolio.addToUnknownItemFactor(stockAsset);
+        stockAsset.mapPortfolioItem(portfolio);
         stockAssetRepository.save(stockAsset);
         return stockAsset;
     }
