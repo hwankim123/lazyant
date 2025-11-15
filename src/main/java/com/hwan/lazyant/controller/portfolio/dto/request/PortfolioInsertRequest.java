@@ -1,4 +1,4 @@
-package com.hwan.lazyant.controller.portfolio.dto;
+package com.hwan.lazyant.controller.portfolio.dto.request;
 
 import lombok.Getter;
 

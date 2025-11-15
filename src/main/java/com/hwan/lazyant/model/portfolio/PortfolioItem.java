@@ -3,8 +3,10 @@ package com.hwan.lazyant.model.portfolio;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "la_portfolio_items")
@@ -26,10 +28,6 @@ public class PortfolioItem {
     public PortfolioItem(@Nonnull Factor factor, Integer weight) {
         this.factor = factor;
         this.weight = weight;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     public void mapWithPortfolio(Portfolio portfolio) {

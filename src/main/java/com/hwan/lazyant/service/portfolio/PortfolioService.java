@@ -1,6 +1,7 @@
 package com.hwan.lazyant.service.portfolio;
 
-import com.hwan.lazyant.controller.portfolio.dto.PortfolioInsertRequest;
+import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioInsertRequest;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioDetailResponse;
 import com.hwan.lazyant.mapper.portfolio.PortfolioMapper;
 import com.hwan.lazyant.model.portfolio.Portfolio;
 import com.hwan.lazyant.repository.portfolio.PortfolioRepository;
@@ -19,6 +20,10 @@ public class PortfolioService {
         Portfolio portfolio = PortfolioMapper.mapToPortfolio(request);
         portfolio.setUserId(1L);//TODO: 개인화
         portfolioRepository.save(portfolio);
+    }
+
+    public PortfolioDetailResponse getByUserId(long userId) {
+        return PortfolioMapper.mapToDetailResponse(this.findByUserId(userId));
     }
 
     public Portfolio findByUserId(long userId) {
