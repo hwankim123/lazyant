@@ -3,7 +3,9 @@ package com.hwan.lazyant.mapper.portfolio;
 import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioInsertRequest;
 import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioItemInsertRequest;
 import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioDetailResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioHoldingResponse;
 import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioItemDetailResponse;
+import com.hwan.lazyant.model.portfolio.Holding;
 import com.hwan.lazyant.model.portfolio.Portfolio;
 import com.hwan.lazyant.model.portfolio.PortfolioItem;
 
@@ -25,5 +27,18 @@ public class PortfolioMapper {
         return new PortfolioDetailResponse(portfolio.getId(), portfolio.getName(), portfolio.getItems().stream()
                 .map(item -> new PortfolioItemDetailResponse(item.getId(), item.getFactor(), item.getWeight()))
                 .toList());
+    }
+
+    public static PortfolioHoldingResponse mapToHoldingsResponse(Holding holding) {
+        return new PortfolioHoldingResponse(
+                holding.getMarket(),
+                holding.getSymbol(),
+                holding.getTotalInvestmentPrincipal(),
+                holding.getTotalVolume(),
+                holding.getAveragePrice(),
+                holding.getMarketPrice(),
+                holding.getProfitLoss(),
+                holding.getProfitLossRate()
+        );
     }
 }

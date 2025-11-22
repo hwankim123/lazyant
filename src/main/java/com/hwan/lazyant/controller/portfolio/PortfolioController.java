@@ -2,11 +2,14 @@ package com.hwan.lazyant.controller.portfolio;
 
 import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioInsertRequest;
 import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioDetailResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioHoldingResponse;
 import com.hwan.lazyant.service.portfolio.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,5 +27,11 @@ public class PortfolioController {
     public ResponseEntity<PortfolioDetailResponse> getMyPortfolio() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(portfolioService.getByUserId(1L)); // TODO: 개인화
+    }
+
+    @GetMapping("/my/holdings")
+    public ResponseEntity<List<PortfolioHoldingResponse>> getMyPortfolioHoldings() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(portfolioService.getHoldingsByUserId(1L)); // TODO: 개인화
     }
 }
