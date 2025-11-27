@@ -37,3 +37,4 @@ out/
 .vscode/
 src/main/resources/application.yml
 /src/main/resources/aws/
+/src/main/resources/tesseract/
