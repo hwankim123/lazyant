@@ -41,13 +41,13 @@ public class StockAsset {
     public static StockAsset from(@Nonnull Trading trading) {
         StockAsset stockAsset = new StockAsset();
         stockAsset.stockId = trading.getStockId();
-        stockAsset.volume = trading.getSignedVolume();
+        stockAsset.volume = trading.getSignedQuantity();
         stockAsset.investmentPrincipal = trading.evaluateAmount();
         return stockAsset;
     }
 
     public void accumulate(Trading trading) {
-        this.volume += trading.getSignedVolume();
+        this.volume += trading.getSignedQuantity();
         this.investmentPrincipal += trading.evaluateAmount();
     }
 

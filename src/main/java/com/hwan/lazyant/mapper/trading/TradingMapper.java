@@ -7,6 +7,6 @@ public class TradingMapper {
 
     public static Trading mapToTrading(TradingInsertRequest request) {
         return new Trading(request.getStockId(), request.getAccountId(), request.getTradingType(),
-                request.getPrice(), request.getVolume(), request.getTradeTime(), request.getMemo());
+                request.getPrice(), request.getQuantity(), request.getTradeAt(), request.getMemo());
     }
 }

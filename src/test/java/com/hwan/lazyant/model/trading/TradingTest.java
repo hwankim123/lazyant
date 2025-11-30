@@ -14,10 +14,10 @@ public class TradingTest {
     public void calculate_volume() {
         Trading sut = createInstanceOf(100d, null);
 
-        sut.calculateVolume(50d);
+        sut.calculateQuantity(50d);
 
-        assertThat(sut.hasVolume()).isTrue();
-        assertThat(sut.getVolume()).isEqualTo(0.5d);
+        assertThat(sut.hasQuantity()).isTrue();
+        assertThat(sut.getQuantity()).isEqualTo(0.5d);
     }
 
     @Test

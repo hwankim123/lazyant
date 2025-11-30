@@ -17,14 +17,14 @@ public class TradingService {
     private final StockAssetService stockAssetService;
 
     @Transactional
-    public Trading write(TradingInsertRequest request) {
+    public Trading insert(TradingInsertRequest request) {
         Trading trading = TradingMapper.mapToTrading(request);
 
-        if(!trading.hasVolume() && trading.hasPrice()) {
-            trading.calculateVolume(request.getAmount());
-        } else if(trading.hasVolume() && !trading.hasPrice()) {
+        if(!trading.hasQuantity() && trading.hasPrice()) {
+            trading.calculateQuantity(request.getAmount());
+        } else if(trading.hasQuantity() && !trading.hasPrice()) {
             trading.calculatePrice(request.getAmount());
-        } else if(!trading.hasVolume() && !trading.hasPrice()) {
+        } else if(!trading.hasQuantity() && !trading.hasPrice()) {
             throw new IllegalArgumentException("Cannot write tradingHistory. Both volume and marketCurrentPrice is null");
         }
 

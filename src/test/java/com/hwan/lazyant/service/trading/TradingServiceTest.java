@@ -33,14 +33,14 @@ class TradingServiceTest {
     private StockAssetRepository stockAssetRepository;
 
     @Test
-    public void calculate_volume_if_request_dont_have_volume() {
+    public void calculate_volume_if_request_dont_have_quantity() {
         LocalDateTime tradeAt = LocalDateTime.now();
         Trading expectedTrading = TradingMapper.mapToTrading(createInstanceOf(100d, 0.5d, 50d, tradeAt));
         when(stockAssetRepository.findByStockId(anyLong())).thenReturn(Optional.of(StockAsset.from(expectedTrading)));
         TradingInsertRequest tradingInsertRequest = createInstanceOf(100d, null, 50d, tradeAt);
         TradingService sut = new TradingService(tradingRepository, stockAssetService);
 
-        Trading trading = sut.write(tradingInsertRequest);
+        Trading trading = sut.insert(tradingInsertRequest);
 
         assertThat(trading).isEqualTo(expectedTrading);
     }
@@ -53,7 +53,7 @@ class TradingServiceTest {
         TradingInsertRequest tradingInsertRequest = createInstanceOf(null, 0.5d, 50d, tradeAt);
         TradingService sut = new TradingService(tradingRepository, stockAssetService);
 
-        Trading trading = sut.write(tradingInsertRequest);
+        Trading trading = sut.insert(tradingInsertRequest);
 
         assertThat(trading).isEqualTo(expectedTrading);
     }
@@ -63,7 +63,7 @@ class TradingServiceTest {
         TradingInsertRequest tradingInsertRequest = createInstanceOf(null, null, 50d, LocalDateTime.now());
         TradingService sut = new TradingService(tradingRepository, stockAssetService);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> sut.write(tradingInsertRequest));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> sut.insert(tradingInsertRequest));
     }
 
     public static TradingInsertRequest createInstanceOf(Double price, Double volume, Double amount, LocalDateTime dateTime) {

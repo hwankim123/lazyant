@@ -23,7 +23,7 @@ public class StockAssetTest {
 
         sut.accumulate(trading);
 
-        assertThat(sut.getVolume()).isEqualTo(volumeBeforeAccumulated + trading.getSignedVolume());
+        assertThat(sut.getVolume()).isEqualTo(volumeBeforeAccumulated + trading.getSignedQuantity());
         assertThat(sut.getInvestmentPrincipal()).isEqualTo(investmentPrincipalBeforeAccumulated + trading.evaluateAmount());
     }
 

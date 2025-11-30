@@ -17,6 +17,6 @@ public class TradingController {
 
     @PostMapping
     public void insert(@RequestBody TradingInsertRequest request) {
-        tradingService.write(request);
+        tradingService.insert(request);
     }
 }

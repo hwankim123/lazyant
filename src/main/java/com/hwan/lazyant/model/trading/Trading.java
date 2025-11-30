@@ -34,39 +34,39 @@ public class Trading {
     private Double price;
 
     @Column
-    private Double volume;
+    private Double quantity;
 
     @Nonnull
     @Column
-    private LocalDateTime tradeTime;
+    private LocalDateTime tradeAt;
 
     @Column
     private String memo;
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, 수량, 메모
     public Trading(@Nonnull Long stockId, @Nonnull Long accountId, @Nonnull TradingType tradingType,
-                   @Nullable Double price, @Nullable Double volume, @Nullable LocalDateTime tradeTime,
+                   @Nullable Double price, @Nullable Double quantity, @Nullable LocalDateTime tradeAt,
                    @Nullable String memo) {
         this.stockId = stockId;
         this.accountId = accountId;
         this.tradingType = tradingType;
         this.price = price;
-        this.tradeTime = tradeTime == null ? LocalDateTime.now() : tradeTime;
-        this.volume = volume;
+        this.tradeAt = tradeAt == null ? LocalDateTime.now() : tradeAt;
+        this.quantity = quantity;
         this.memo = memo;
     }
 
-    public boolean hasVolume() {
-        return this.volume != null;
+    public boolean hasQuantity() {
+        return this.quantity != null;
     }
 
-    public Double getVolume() {
-        return this.volume;
+    public Double getQuantity() {
+        return this.quantity;
     }
 
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
-    public void calculateVolume(Double amount) {
-        this.volume = Math.round(amount / this.price * 1000000) / 1000000.0;
+    public void calculateQuantity(Double amount) {
+        this.quantity = Math.round(amount / this.price * 1000000) / 1000000.0;
     }
 
     public boolean hasPrice() {
@@ -78,19 +78,19 @@ public class Trading {
     }
 
     public void calculatePrice(Double amount) {
-        this.price = Math.round(amount / this.volume * 100) / 100.0;
+        this.price = Math.round(amount / this.quantity * 100) / 100.0;
     }
 
     public Long getStockId() {
         return this.stockId;
     }
 
-    public Double getSignedVolume() {
-        return this.tradingType.applySign(this.volume);
+    public Double getSignedQuantity() {
+        return this.tradingType.applySign(this.quantity);
     }
 
     public double evaluateAmount() {
-        return this.tradingType.applySign(Math.round(this.getVolume() * this.price * 100) / 100.0);
+        return this.tradingType.applySign(Math.round(this.getQuantity() * this.price * 100) / 100.0);
     }
 
     @Override
@@ -98,11 +98,11 @@ public class Trading {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trading trading = (Trading) o;
-        return Objects.equals(stockId, trading.stockId) && Objects.equals(accountId, trading.accountId) && tradingType == trading.tradingType && Objects.equals(price, trading.price) && Objects.equals(volume, trading.volume) && Objects.equals(tradeTime, trading.tradeTime);
+        return Objects.equals(stockId, trading.stockId) && Objects.equals(accountId, trading.accountId) && tradingType == trading.tradingType && Objects.equals(price, trading.price) && Objects.equals(quantity, trading.quantity) && Objects.equals(tradeAt, trading.tradeAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stockId, accountId, tradingType, price, volume, tradeTime);
+        return Objects.hash(stockId, accountId, tradingType, price, quantity, tradeAt);
     }
 }

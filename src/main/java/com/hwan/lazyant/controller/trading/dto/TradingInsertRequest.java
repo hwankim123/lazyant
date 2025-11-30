@@ -16,9 +16,9 @@ public class TradingInsertRequest {
     private Long accountId;
     private TradingType tradingType;
     private Double price;
-    private Double volume;
+    private Double quantity;
     private Double amount;
     private String memo;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime tradeTime;
+    private LocalDateTime tradeAt;
 }
