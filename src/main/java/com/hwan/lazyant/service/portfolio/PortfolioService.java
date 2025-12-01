@@ -1,8 +1,10 @@
 package com.hwan.lazyant.service.portfolio;
 
 import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioInsertRequest;
-import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioDetailResponse;
 import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioHoldingResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioItemStatusResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioStatusResponse;
 import com.hwan.lazyant.mapper.portfolio.PortfolioMapper;
 import com.hwan.lazyant.model.portfolio.Holding;
 import com.hwan.lazyant.model.portfolio.Portfolio;
@@ -15,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -31,8 +35,35 @@ public class PortfolioService {
         portfolioRepository.save(portfolio);
     }
 
-    public PortfolioDetailResponse getByUserId(long userId) {
+    public PortfolioResponse getByUserId(long userId) {
         return PortfolioMapper.mapToDetailResponse(this.findByUserId(userId));
+    }
+
+    public PortfolioStatusResponse getActualStatus(long userId) {
+        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
+                .map(HoldingProjection::toModel)
+                .toList();
+
+        // 현재가 조회 API call
+        List<PortfolioHoldingResponse> portfolioHoldings = holdings.stream()
+                .map(holding -> {
+                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
+                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
+                })
+                .toList();
+
+        Map<Long, PortfolioItemStatusResponse> itemStatusMap = new HashMap<>();
+
+        for(PortfolioHoldingResponse portfolioHolding : portfolioHoldings) {
+            if(itemStatusMap.containsKey(portfolioHolding.getPortfolioItemId())) {
+                PortfolioItemStatusResponse itemStatus = itemStatusMap.get(portfolioHolding.getPortfolioItemId());
+                itemStatus.accumulate(portfolioHolding);
+            } else {
+                itemStatusMap.put(portfolioHolding.getPortfolioItemId(), new PortfolioItemStatusResponse(portfolioHolding));
+            }
+        }
+
+        return new PortfolioStatusResponse(itemStatusMap.values());
     }
 
     public List<PortfolioHoldingResponse> getHoldingsByUserId(long userId) {
@@ -42,10 +73,8 @@ public class PortfolioService {
         // 현재가 조회 API call
         return holdings.stream()
                 .map(holding -> {
-                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.getMarket(), holding.getSymbol()));
-                    return PortfolioMapper.mapToHoldingsResponse(
-                            holding.withMarketEvaluation(marketPriceResponse.getUsdMarketPrice())
-                    );
+                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
+                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
                 })
                 .toList();
     }

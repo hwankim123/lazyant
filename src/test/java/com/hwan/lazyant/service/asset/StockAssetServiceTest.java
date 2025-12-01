@@ -55,7 +55,7 @@ class StockAssetServiceTest {
         StockAsset stockAsset = sut.accumulate(trading);
 
         assertThat(stockAsset.getVolume()).isEqualTo(stockAssetVolume);
-        assertThat(stockAsset.getInvestmentPrincipal()).isEqualTo(stockAssetInvestmentPrincipal);
+        assertThat(stockAsset.getPrincipal()).isEqualTo(stockAssetInvestmentPrincipal);
     }
 
 }

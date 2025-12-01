@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioItemDetailResponse {
+public class PortfolioItemResponse {
     private Long id;
     private Factor factor;
     private Integer weight;

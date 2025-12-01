@@ -10,8 +10,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioDetailResponse {
+public class PortfolioResponse {
     private Long id;
     private String name;
-    private List<PortfolioItemDetailResponse> items = new ArrayList<>();
+    private List<PortfolioItemResponse> items = new ArrayList<>();
 }

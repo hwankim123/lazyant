@@ -7,7 +7,7 @@ CREATE TABLE la_portfolios (
 CREATE TABLE la_portfolio_items (
 	id bigserial PRIMARY KEY,
 	portfolio_id bigserial not null,
-	factor smallint not null,
+	factor varchar(64) not null,
 	weight smallint not null
 );
 

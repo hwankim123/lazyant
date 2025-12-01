@@ -25,30 +25,30 @@ public class StockAsset {
 
     private double volume;
 
-    private double investmentPrincipal;
+    private double principal;
 
     public StockAsset(Long stockId) {
         this(stockId, null, 0d, 0d);
     }
 
-    public StockAsset(@Nonnull Long stockId, @Nullable Long portfolioItemId, @Nullable double volume, @Nullable double investmentPrincipal) {
+    public StockAsset(@Nonnull Long stockId, @Nullable Long portfolioItemId, @Nullable double volume, @Nullable double principal) {
         this.stockId = stockId;
         this.portfolioItemId = portfolioItemId;
         this.volume = volume;
-        this.investmentPrincipal = investmentPrincipal;
+        this.principal = principal;
     }
 
     public static StockAsset from(@Nonnull Trading trading) {
         StockAsset stockAsset = new StockAsset();
         stockAsset.stockId = trading.getStockId();
         stockAsset.volume = trading.getSignedQuantity();
-        stockAsset.investmentPrincipal = trading.evaluateAmount();
+        stockAsset.principal = trading.evaluateAmount();
         return stockAsset;
     }
 
     public void accumulate(Trading trading) {
         this.volume += trading.getSignedQuantity();
-        this.investmentPrincipal += trading.evaluateAmount();
+        this.principal += trading.evaluateAmount();
     }
 
     public void mapPortfolioItem(Portfolio portfolio) {
@@ -60,7 +60,7 @@ public class StockAsset {
         return this.volume;
     }
 
-    public double getInvestmentPrincipal() {
-        return investmentPrincipal;
+    public double getPrincipal() {
+        return principal;
     }
 }

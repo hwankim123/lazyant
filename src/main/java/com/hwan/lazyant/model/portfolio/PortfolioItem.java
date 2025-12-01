@@ -21,6 +21,7 @@ public class PortfolioItem {
     private Portfolio portfolio;
 
     @Nonnull
+    @Enumerated(value = EnumType.STRING)
     private Factor factor;
 
     private Integer weight;

@@ -19,12 +19,12 @@ public class StockAssetTest {
         Trading trading = TradingTest.createInstanceOf(type, price, volume);
         StockAsset sut = new StockAsset(1L);
         double volumeBeforeAccumulated = sut.getVolume();
-        double investmentPrincipalBeforeAccumulated = sut.getInvestmentPrincipal();
+        double investmentPrincipalBeforeAccumulated = sut.getPrincipal();
 
         sut.accumulate(trading);
 
         assertThat(sut.getVolume()).isEqualTo(volumeBeforeAccumulated + trading.getSignedQuantity());
-        assertThat(sut.getInvestmentPrincipal()).isEqualTo(investmentPrincipalBeforeAccumulated + trading.evaluateAmount());
+        assertThat(sut.getPrincipal()).isEqualTo(investmentPrincipalBeforeAccumulated + trading.evaluateAmount());
     }
 
     public static StockAsset createInstanceOf(double volume, double investmentPrincipal) {
