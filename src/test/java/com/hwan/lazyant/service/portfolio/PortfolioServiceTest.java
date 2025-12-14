@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
@@ -29,7 +30,6 @@ class PortfolioServiceTest {
     @Mock
     private MarketPriceProvider marketPriceProvider;
 
-    //TODO: 안쓰는 코드 제거한 후 테스트 돌려보기
     @Test
     void getActualStatus() {
         //given
@@ -49,8 +49,15 @@ class PortfolioServiceTest {
 
         //then
         //TODO: 현재 double의 부동소수점 방식으로 인해 정확한 값비교가 안됨
-        PortfolioSnapshotResponse actualResponse = new PortfolioSnapshotResponse();
-        assertThat(response).isEqualTo(actualResponse);
+        assertThat(response)
+                .extracting("totalAmount", "totalProfitLoss")
+                .containsExactly(3200.0, 1600.0);
+        assertThat(response.getItemSnapshots())
+                .extracting("principal", "evaluatedAmount", "profitLoss")
+                .containsExactly(
+                        tuple(1000.0, 2000.0, 1000.0),
+                        tuple(600.0, 1200.0, 600.0)
+                );
     }
 
     public static class HoldingProjectionForTest implements HoldingProjection {

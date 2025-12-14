@@ -26,6 +26,8 @@ public class PortfolioItemSnapshotResponse {
         this.factor = itemSnapshot.getFactor();
         this.principal = itemSnapshot.getPrincipal();
         this.evaluatedAmount = itemSnapshot.getEvaluatedAmount();
+        this.profitLoss = itemSnapshot.getProfitLoss();
+        this.profitLossRate = itemSnapshot.getProfitLossRate();
         this.weight = itemSnapshot.getWeight();
         this.holdings = itemSnapshot.getHoldings().stream()
                 .map(MarketEvaluatedHoldingResponse::new)
