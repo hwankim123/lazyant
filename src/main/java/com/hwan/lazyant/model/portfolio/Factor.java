@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * 투자 관점
+ */
 @Getter
 public enum Factor {
     UNKNOWN((short) 0),

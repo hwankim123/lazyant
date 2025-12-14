@@ -1,8 +1,9 @@
 package com.hwan.lazyant.repository.portfolio.projection;
 
 import com.hwan.lazyant.model.portfolio.Factor;
-import com.hwan.lazyant.model.portfolio.Holding;
 import com.hwan.lazyant.model.stock.type.Market;
+
+import static com.hwan.lazyant.model.portfolio.MarketEvaluatedHolding.Holding;
 
 public interface HoldingProjection {
     String getName();

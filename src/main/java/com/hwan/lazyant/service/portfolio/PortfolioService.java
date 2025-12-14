@@ -1,16 +1,16 @@
 package com.hwan.lazyant.service.portfolio;
 
 import com.hwan.lazyant.controller.portfolio.dto.request.PortfolioInsertRequest;
-import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioHoldingResponse;
-import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioItemStatusResponse;
 import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioResponse;
-import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioStatusResponse;
+import com.hwan.lazyant.controller.portfolio.dto.response.PortfolioSnapshotResponse;
 import com.hwan.lazyant.mapper.portfolio.PortfolioMapper;
-import com.hwan.lazyant.model.portfolio.Holding;
+import com.hwan.lazyant.model.portfolio.MarketEvaluatedHolding;
+import com.hwan.lazyant.model.portfolio.MarketEvaluatedHolding.Holding;
 import com.hwan.lazyant.model.portfolio.Portfolio;
+import com.hwan.lazyant.model.portfolio.PortfolioItemSnapshot;
+import com.hwan.lazyant.model.portfolio.PortfolioSnapshot;
 import com.hwan.lazyant.openapi.market.MarketPriceProvider;
 import com.hwan.lazyant.openapi.market.MarketPriceRequest;
-import com.hwan.lazyant.openapi.market.MarketPriceResponse;
 import com.hwan.lazyant.repository.portfolio.PortfolioRepository;
 import com.hwan.lazyant.repository.portfolio.projection.HoldingProjection;
 import lombok.RequiredArgsConstructor;
@@ -39,48 +39,56 @@ public class PortfolioService {
         return PortfolioMapper.mapToDetailResponse(this.findByUserId(userId));
     }
 
-    public PortfolioStatusResponse getActualStatus(long userId) {
-        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
-                .map(HoldingProjection::toModel)
-                .toList();
-
-        // 현재가 조회 API call
-        List<PortfolioHoldingResponse> portfolioHoldings = holdings.stream()
-                .map(holding -> {
-                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
-                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
-                })
-                .toList();
-
-        Map<Long, PortfolioItemStatusResponse> itemStatusMap = new HashMap<>();
-
-        for(PortfolioHoldingResponse portfolioHolding : portfolioHoldings) {
-            if(itemStatusMap.containsKey(portfolioHolding.getPortfolioItemId())) {
-                PortfolioItemStatusResponse itemStatus = itemStatusMap.get(portfolioHolding.getPortfolioItemId());
-                itemStatus.accumulate(portfolioHolding);
-            } else {
-                itemStatusMap.put(portfolioHolding.getPortfolioItemId(), new PortfolioItemStatusResponse(portfolioHolding));
-            }
-        }
-
-        return new PortfolioStatusResponse(itemStatusMap.values());
-    }
-
-    public List<PortfolioHoldingResponse> getHoldingsByUserId(long userId) {
-        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
-                .map(HoldingProjection::toModel)
-                .toList();
-        // 현재가 조회 API call
-        return holdings.stream()
-                .map(holding -> {
-                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
-                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
-                })
-                .toList();
-    }
-
     public Portfolio findByUserId(long userId) {
         return portfolioRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find Portfolio from repository. Given userId=%d".formatted(userId)));
     }
+
+    /**
+     * 포트폴리오 현황 정보 생성
+     */
+    public PortfolioSnapshotResponse generatePortfolioSnapshot(long userId) {
+        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
+                .map(HoldingProjection::toModel)
+                .toList();
+        List<MarketEvaluatedHolding> marketEvaluatedHoldings = holdings.stream()
+                .map(holding -> holding.evaluate(
+                        marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()))
+                                .getUsdMarketPrice() // TODO: 국내 주식 반영
+                        )
+                ).toList();
+
+        Map<Long, PortfolioItemSnapshot> itemSnapshotMap = this.aggregateItemSnapshots(marketEvaluatedHoldings);
+        return new PortfolioSnapshotResponse(PortfolioSnapshot.gatherAll(itemSnapshotMap.values()));
+    }
+
+    /**
+     * 주식시장이 반영된 구성 종목 현황을 포트폴리오 항목별 현황으로 aggregate
+     */
+    private Map<Long, PortfolioItemSnapshot> aggregateItemSnapshots(List<MarketEvaluatedHolding> marketEvaluatedHoldings) {
+        Map<Long, PortfolioItemSnapshot> itemSnapshotMap = new HashMap<>();
+        for (MarketEvaluatedHolding marketEvaluatedHolding : marketEvaluatedHoldings) {
+            if (itemSnapshotMap.containsKey(marketEvaluatedHolding.holding().portfolioItemId())) {
+                PortfolioItemSnapshot portfolioItemSnapshot = itemSnapshotMap.get(marketEvaluatedHolding.holding().portfolioItemId());
+                portfolioItemSnapshot.accumulate(marketEvaluatedHolding);
+            } else {
+                itemSnapshotMap.put(marketEvaluatedHolding.holding().portfolioItemId(), new PortfolioItemSnapshot(marketEvaluatedHolding));
+            }
+        }
+        return itemSnapshotMap;
+    }
+
+    //TODO: 주식 자산 클릭했을 때 나오는 주식자산의 상세 정보 조회 로직으로 변경
+//    public List<PortfolioHoldingResponse> getHoldingsByUserId(long userId) {
+//        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
+//                .map(HoldingProjection::toModel)
+//                .toList();
+//        // 현재가 조회 API call
+//        return holdings.stream()
+//                .map(holding -> {
+//                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
+//                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
+//                })
+//                .toList();
+//    }
 }
