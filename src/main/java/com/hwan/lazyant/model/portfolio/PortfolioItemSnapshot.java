@@ -21,19 +21,16 @@ public class PortfolioItemSnapshot {
     private List<MarketEvaluatedHolding> holdings = new ArrayList<>();
 
     public PortfolioItemSnapshot(MarketEvaluatedHolding marketEvaluatedHolding) {
-        this.id = marketEvaluatedHolding.holding()
-                .portfolioItemId();
-        this.factor = marketEvaluatedHolding.holding()
-                .factor();
-        this.principal = marketEvaluatedHolding.holding()
-                .principal();
-        this.evaluatedAmount = marketEvaluatedHolding.evaluatedAmount();
+        this.id = marketEvaluatedHolding.getPortfolioItemId();
+        this.factor = marketEvaluatedHolding.getFactor();
+        this.principal = marketEvaluatedHolding.getPrincipal();
+        this.evaluatedAmount = marketEvaluatedHolding.getEvaluatedAmount();
         this.holdings.add(marketEvaluatedHolding);
     }
 
     public void accumulate(MarketEvaluatedHolding marketEvaluatedHolding) {
-        this.principal += marketEvaluatedHolding.holding().principal();
-        this.evaluatedAmount += marketEvaluatedHolding.evaluatedAmount();
+        this.principal += marketEvaluatedHolding.getPrincipal();
+        this.evaluatedAmount += marketEvaluatedHolding.getEvaluatedAmount();
         this.holdings.add(marketEvaluatedHolding);
     }
 

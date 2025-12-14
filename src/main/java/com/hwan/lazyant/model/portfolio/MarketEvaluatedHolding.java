@@ -15,19 +15,39 @@ public class MarketEvaluatedHolding {
     private final double profitLossRate; // 수익/손익률
     private double weight; // 전체 포트폴리오 내 비중
 
-    public Holding holding() {
-        return holding;
+    public String getName() {
+        return holding.name();
     }
 
-    public double evaluatedAmount() {
+    public Long getPortfolioItemId() {
+        return holding.portfolioItemId();
+    }
+
+    public Factor getFactor() {
+        return holding.factor();
+    }
+
+    public String getSymbol() {
+        return holding.symbol();
+    }
+
+    public double getPrincipal() {
+        return holding.principal();
+    }
+
+    public double getQuantity() {
+        return holding.quantity();
+    }
+
+    public double getEvaluatedAmount() {
         return evaluatedAmount;
     }
 
-    public double profitLoss() {
+    public double getProfitLoss() {
         return profitLoss;
     }
 
-    public double profitLossRate() {
+    public double getProfitLossRate() {
         return profitLossRate;
     }
 
@@ -35,7 +55,7 @@ public class MarketEvaluatedHolding {
         this.weight = StockValueCalculator.calculateWeight(evaluatedAmount, totalAmount, 2);
     }
 
-    public double weight() {
+    public double getWeight() {
         return weight;
     }
 

@@ -68,11 +68,11 @@ public class PortfolioService {
     private Map<Long, PortfolioItemSnapshot> aggregateItemSnapshots(List<MarketEvaluatedHolding> marketEvaluatedHoldings) {
         Map<Long, PortfolioItemSnapshot> itemSnapshotMap = new HashMap<>();
         for (MarketEvaluatedHolding marketEvaluatedHolding : marketEvaluatedHoldings) {
-            if (itemSnapshotMap.containsKey(marketEvaluatedHolding.holding().portfolioItemId())) {
-                PortfolioItemSnapshot portfolioItemSnapshot = itemSnapshotMap.get(marketEvaluatedHolding.holding().portfolioItemId());
+            if (itemSnapshotMap.containsKey(marketEvaluatedHolding.getPortfolioItemId())) {
+                PortfolioItemSnapshot portfolioItemSnapshot = itemSnapshotMap.get(marketEvaluatedHolding.getPortfolioItemId());
                 portfolioItemSnapshot.accumulate(marketEvaluatedHolding);
             } else {
-                itemSnapshotMap.put(marketEvaluatedHolding.holding().portfolioItemId(), new PortfolioItemSnapshot(marketEvaluatedHolding));
+                itemSnapshotMap.put(marketEvaluatedHolding.getPortfolioItemId(), new PortfolioItemSnapshot(marketEvaluatedHolding));
             }
         }
         return itemSnapshotMap;

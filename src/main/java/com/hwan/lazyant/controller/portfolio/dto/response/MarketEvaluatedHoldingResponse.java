@@ -19,18 +19,14 @@ public class MarketEvaluatedHoldingResponse {
     private double weight;
 
     public MarketEvaluatedHoldingResponse(MarketEvaluatedHolding marketEvaluatedHolding) {
-        this.name = marketEvaluatedHolding.holding()
-                .name();
-        this.symbol = marketEvaluatedHolding.holding()
-                .symbol();
-        this.principal = marketEvaluatedHolding.holding()
-                .principal();
-        this.quantity = marketEvaluatedHolding.holding()
-                .quantity();
+        this.name = marketEvaluatedHolding.getName();
+        this.symbol = marketEvaluatedHolding.getSymbol();
+        this.principal = marketEvaluatedHolding.getPrincipal();
+        this.quantity = marketEvaluatedHolding.getQuantity();
 
-        this.evaluatedAmount = marketEvaluatedHolding.evaluatedAmount();
-        this.profitLoss = marketEvaluatedHolding.profitLoss();
-        this.profitLossRate = marketEvaluatedHolding.profitLossRate();
-        this.weight = marketEvaluatedHolding.weight();
+        this.evaluatedAmount = marketEvaluatedHolding.getEvaluatedAmount();
+        this.profitLoss = marketEvaluatedHolding.getProfitLoss();
+        this.profitLossRate = marketEvaluatedHolding.getProfitLossRate();
+        this.weight = marketEvaluatedHolding.getWeight();
     }
 }
