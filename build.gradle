@@ -40,3 +40,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootRun {
+	systemProperty "jna.nosys", "true"
+	systemProperty "jna.library.path", "/opt/local/lib"
+	systemProperty "java.library.path", "/opt/local/lib"
+}
+

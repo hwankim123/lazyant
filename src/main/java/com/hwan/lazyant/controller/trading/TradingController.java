@@ -2,14 +2,17 @@ package com.hwan.lazyant.controller.trading;
 
 import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
 import com.hwan.lazyant.ocr.OcrExecutor;
+import com.hwan.lazyant.ocr.TradingWordsGroup;
 import com.hwan.lazyant.service.trading.TradingService;
 import com.hwan.lazyant.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,15 +27,18 @@ public class TradingController {
         tradingService.insert(request);
     }
 
-    @PostMapping("/bulk")
-    public void bulkInsert(@RequestPart("imageFile") MultipartFile imageFile) {
+    @PostMapping("/ocr/extract")
+    public ResponseEntity<List<TradingWordsGroup>> extractTradingWords(@RequestPart("imageFile") MultipartFile imageFile) {
         if (!imageFile.isEmpty()) {
             try {
                 File file = FileUtil.convertMultipartFileToFile(imageFile);
-                ocrExecutor.extractTradings(file);
+                return ResponseEntity.ok(ocrExecutor.extractTradings(file));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            return ResponseEntity.badRequest()
+                    .build();
         }
     }
 }
