@@ -87,7 +87,7 @@ public class MarketEvaluatedHolding {
         }
 
         private double evaluateEvaluatedAmount(double marketPrice) {
-            return StockValueCalculator.calculateEvaluatedAmount(marketPrice, quantity, 2);
+            return StockValueCalculator.calculateAmount(marketPrice, quantity, 2);
         }
 
         private double evaluateProfitLoss(double marketPrice) {

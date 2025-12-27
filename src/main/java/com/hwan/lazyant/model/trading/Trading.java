@@ -1,14 +1,17 @@
 package com.hwan.lazyant.model.trading;
 
+import com.hwan.lazyant.util.StockValueCalculator;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "la_tradings")
@@ -60,10 +63,6 @@ public class Trading {
         return this.quantity != null;
     }
 
-    public Double getQuantity() {
-        return this.quantity;
-    }
-
     //TODO: 도메인 유의성이 없음(도메인 전제 조건) -> 가격, null check
     public void calculateQuantity(Double amount) {
         this.quantity = Math.round(amount / this.price * 1000000) / 1000000.0;
@@ -73,16 +72,8 @@ public class Trading {
         return this.price != null;
     }
 
-    public Double getPrice() {
-        return this.price;
-    }
-
     public void calculatePrice(Double amount) {
         this.price = Math.round(amount / this.quantity * 100) / 100.0;
-    }
-
-    public Long getStockId() {
-        return this.stockId;
     }
 
     public Double getSignedQuantity() {
@@ -90,7 +81,9 @@ public class Trading {
     }
 
     public double evaluateAmount() {
-        return this.tradingType.applySign(Math.round(this.getQuantity() * this.price * 100) / 100.0);
+        return this.tradingType.applySign(
+                StockValueCalculator.calculateAmount(this.getQuantity(), this.price, 2)
+        );
     }
 
     @Override

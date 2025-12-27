@@ -1,4 +1,4 @@
-package com.hwan.lazyant.controller.trading.dto;
+package com.hwan.lazyant.controller.trading.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hwan.lazyant.model.trading.TradingType;

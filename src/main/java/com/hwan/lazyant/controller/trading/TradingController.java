@@ -1,6 +1,6 @@
 package com.hwan.lazyant.controller.trading;
 
-import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
+import com.hwan.lazyant.controller.trading.dto.request.TradingInsertRequest;
 import com.hwan.lazyant.ocr.OcrExecutor;
 import com.hwan.lazyant.ocr.TradingWordsGroup;
 import com.hwan.lazyant.service.trading.TradingService;

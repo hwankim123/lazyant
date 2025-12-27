@@ -1,6 +1,6 @@
 package com.hwan.lazyant.service.trading;
 
-import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
+import com.hwan.lazyant.controller.trading.dto.request.TradingInsertRequest;
 import com.hwan.lazyant.mapper.trading.TradingMapper;
 import com.hwan.lazyant.model.asset.StockAsset;
 import com.hwan.lazyant.model.trading.Trading;
