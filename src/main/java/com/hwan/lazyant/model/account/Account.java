@@ -23,6 +23,9 @@ public class Account {
     @Nonnull
     private Bank bank;
 
+    @Nonnull
+    private Long userId;
+
     public Account(@Nonnull String name, @Nullable String nickname, @Nonnull Bank bank) {
         this.name = name;
         this.nickname = nickname;

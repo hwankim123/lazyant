@@ -1,6 +1,6 @@
 package com.hwan.lazyant.service.trading;
 
-import com.hwan.lazyant.controller.trading.dto.TradingInsertRequest;
+import com.hwan.lazyant.controller.trading.dto.request.TradingInsertRequest;
 import com.hwan.lazyant.mapper.trading.TradingMapper;
 import com.hwan.lazyant.model.trading.Trading;
 import com.hwan.lazyant.repository.trading.TradingRepository;
@@ -8,6 +8,8 @@ import com.hwan.lazyant.service.asset.StockAssetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -32,5 +34,9 @@ public class TradingService {
         stockAssetService.accumulate(trading);
 
         return trading;
+    }
+
+    public List<Trading> getRecentTradings(long userId, Long stockId) {
+        return tradingRepository.findRecentTradings(userId, stockId);
     }
 }

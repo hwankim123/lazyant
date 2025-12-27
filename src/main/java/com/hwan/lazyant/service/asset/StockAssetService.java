@@ -4,6 +4,7 @@ import com.hwan.lazyant.model.asset.StockAsset;
 import com.hwan.lazyant.model.portfolio.Portfolio;
 import com.hwan.lazyant.model.trading.Trading;
 import com.hwan.lazyant.repository.asset.StockAssetRepository;
+import com.hwan.lazyant.repository.asset.projection.StockAssetDetailsProjection;
 import com.hwan.lazyant.service.portfolio.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class StockAssetService {
         stockAsset.mapPortfolioItem(portfolio);
         stockAssetRepository.save(stockAsset);
         return stockAsset;
+    }
+
+    public StockAssetDetailsProjection findStockAssetDetailsById(Long stockAssetId) {
+        return stockAssetRepository.findStockAssetDetailsById(stockAssetId);
     }
 }

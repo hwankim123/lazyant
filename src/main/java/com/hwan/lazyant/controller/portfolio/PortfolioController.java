@@ -41,11 +41,4 @@ public class PortfolioController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(portfolioService.generatePortfolioSnapshot(1L)); // TODO: 개인화
     }
-
-    //TODO: 주식 자산 클릭했을 때 나오는 주식자산의 상세 정보 조회 API로 변경
-//    @GetMapping("/my/holdings")
-//    public ResponseEntity<List<PortfolioHoldingResponse>> getMyPortfolioHoldings() {
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(portfolioService.getHoldingsByUserId(1L)); // TODO: 개인화
-//    }
 }

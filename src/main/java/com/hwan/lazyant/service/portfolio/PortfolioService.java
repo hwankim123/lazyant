@@ -77,18 +77,4 @@ public class PortfolioService {
         }
         return itemSnapshotMap;
     }
-
-    //TODO: 주식 자산 클릭했을 때 나오는 주식자산의 상세 정보 조회 로직으로 변경
-//    public List<PortfolioHoldingResponse> getHoldingsByUserId(long userId) {
-//        List<Holding> holdings = portfolioRepository.findHoldingsByUserId(userId).stream()
-//                .map(HoldingProjection::toModel)
-//                .toList();
-//        // 현재가 조회 API call
-//        return holdings.stream()
-//                .map(holding -> {
-//                    MarketPriceResponse marketPriceResponse = marketPriceProvider.getMarketPrice(new MarketPriceRequest(holding.market(), holding.symbol()));
-//                    return new PortfolioHoldingResponse(holding, marketPriceResponse.getUsdMarketPrice());
-//                })
-//                .toList();
-//    }
 }

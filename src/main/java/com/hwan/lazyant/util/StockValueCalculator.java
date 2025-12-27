@@ -2,8 +2,12 @@ package com.hwan.lazyant.util;
 
 public class StockValueCalculator {
 
-    public static double calculateEvaluatedAmount(double marketPrice, double quantity, int decimalPlace) {
-        return roundWith(quantity * marketPrice, decimalPlace);
+    public static double calculateAmount(double price, double quantity, int decimalPlace) {
+        return roundWith(quantity * price, decimalPlace);
+    }
+
+    public static double calculateAveragePrice(double principal, double quantity, int decimalPlace) {
+        return roundWith(principal / quantity, decimalPlace);
     }
 
     public static double calculateProfitLoss(double evaluatedAmount, double principal) {
@@ -16,7 +20,6 @@ public class StockValueCalculator {
     }
 
     public static double calculateWeight(double evaluatedAmount, double totalAmount, int decimalPlace) {
-        //        this.weight = ((this.evaluatedAmount / totalAmount) * 100 * 100) / 100.0;
         return roundWith(evaluatedAmount / totalAmount * 100.0, decimalPlace) ;
     }
 
