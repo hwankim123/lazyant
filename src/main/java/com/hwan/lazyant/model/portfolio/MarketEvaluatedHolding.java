@@ -31,6 +31,10 @@ public class MarketEvaluatedHolding {
         return holding.symbol();
     }
 
+    public Long getStockAssetId() {
+        return holding.stockAssetId();
+    }
+
     public double getPrincipal() {
         return holding.principal();
     }
@@ -68,6 +72,7 @@ public class MarketEvaluatedHolding {
             String symbol,
             Long portfolioItemId,
             Factor factor,
+            Long stockAssetId,
             double principal, // 투자 원금
             double quantity // 보유 수량
     ) {

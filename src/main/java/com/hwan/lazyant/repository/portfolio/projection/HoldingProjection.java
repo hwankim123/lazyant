@@ -11,10 +11,12 @@ public interface HoldingProjection {
     String getSymbol();
     Long getPortfolioItemId();
     Factor getFactor();
+    Long getStockAssetId();
     double getPrincipal();
     double getQuantity();
 
     default Holding toModel() {
-        return new Holding(getName(), getMarket(), getSymbol(), getPortfolioItemId(), getFactor(), getPrincipal(), getQuantity());
+        return new Holding(getName(), getMarket(), getSymbol(), getPortfolioItemId(), getFactor(), getStockAssetId(),
+                getPrincipal(), getQuantity());
     }
 }

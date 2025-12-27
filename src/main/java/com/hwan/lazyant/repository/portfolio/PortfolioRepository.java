@@ -19,6 +19,7 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
                    s.symbol as symbol,
                    pi.id as portfolioItemId,
                    pi.factor as factor,
+                   sa.id as stockAssetId
                    ROUND(sa.principal::numeric, 2) as principal,
                    ROUND(sa.quantity::numeric, 6) as quantity
             from la_portfolios p

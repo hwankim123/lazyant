@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class MarketEvaluatedHoldingResponse {
     private String name;
     private String symbol;
+    private Long stockAssetId;
     private double principal;
     private double quantity;
     private double evaluatedAmount;
@@ -21,6 +22,7 @@ public class MarketEvaluatedHoldingResponse {
     public MarketEvaluatedHoldingResponse(MarketEvaluatedHolding marketEvaluatedHolding) {
         this.name = marketEvaluatedHolding.getName();
         this.symbol = marketEvaluatedHolding.getSymbol();
+        this.stockAssetId = marketEvaluatedHolding.getStockAssetId();
         this.principal = marketEvaluatedHolding.getPrincipal();
         this.quantity = marketEvaluatedHolding.getQuantity();
 

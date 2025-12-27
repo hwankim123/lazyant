@@ -31,12 +31,12 @@ class PortfolioServiceTest {
     private MarketPriceProvider marketPriceProvider;
 
     @Test
-    void getActualStatus() {
+    void getPortfolioSnapshot() {
         //given
         when(portfolioRepository.findHoldingsByUserId(anyLong())).thenReturn(
                 List.of(
-                        new HoldingProjectionForTest("invesco qqq", Market.NASDAQ, "QQQ", 1L, Factor.GROWTH, 1000.0, 2),
-                        new HoldingProjectionForTest("VTV", Market.NYSE, "VTV", 2L, Factor.VALUE, 600.0, 3)
+                        new HoldingProjectionForTest("invesco qqq", Market.NASDAQ, "QQQ", 1L, Factor.GROWTH, 1L, 1000.0, 2),
+                        new HoldingProjectionForTest("VTV", Market.NYSE, "VTV", 2L, Factor.VALUE, 2L, 600.0, 3)
                 )
         );
         lenient().when(marketPriceProvider.getMarketPrice(new MarketPriceRequest(Market.NASDAQ, "QQQ"))).thenReturn(new MarketPriceResponse(1000.0));
@@ -67,15 +67,18 @@ class PortfolioServiceTest {
         private final String symbol;
         private final long portfolioItemId;
         private final Factor factor;
+        private final Long stockAssetId;
         private final double principal;
         private final int quantity;
 
-        public HoldingProjectionForTest(String name, Market market, String symbol, long portfolioItemId, Factor factor, double principal, int quantity) {
+        public HoldingProjectionForTest(String name, Market market, String symbol, long portfolioItemId, Factor factor,
+                                        Long stockAssetId, double principal, int quantity) {
             this.name = name;
             this.market = market;
             this.symbol = symbol;
             this.portfolioItemId = portfolioItemId;
             this.factor = factor;
+            this.stockAssetId = stockAssetId;
             this.principal = principal;
             this.quantity = quantity;
         }
@@ -103,6 +106,11 @@ class PortfolioServiceTest {
         @Override
         public Factor getFactor() {
             return this.factor;
+        }
+
+        @Override
+        public Long getStockAssetId() {
+            return stockAssetId;
         }
 
         @Override
